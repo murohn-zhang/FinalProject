@@ -3,12 +3,14 @@ import java.awt.*;
 
 public class GameView extends JFrame {
     private Game game;
-    private final int WINDOW_WIDTH = 200;
-    private final int WINDOW_HEIGHT = 200;
+    public static int WINDOW_WIDTH = 800;
+    public static int WINDOW_HEIGHT = 1000;
     private Player user;
+    private Square sq;
 
-    public GameView(Game game) {
+    public GameView(Game game, Square sq) {
         this.game = game;
+        this.sq = sq;
 
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setTitle("Paper.io");
@@ -17,6 +19,10 @@ public class GameView extends JFrame {
     }
 
     public void paint(Graphics g) {
+        g.setColor(Color.white);
+        g.fillRect(0,0, WINDOW_WIDTH,WINDOW_HEIGHT);
+        sq.draw(g);
+
 
     }
 

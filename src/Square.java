@@ -3,16 +3,16 @@ import java.awt.*;
 public class Square {
     private Player owner;
     private GameView window;
-    private final int WIDTH = 50;
-    private final int HEIGHT = 50;
+    private final int WIDTH = 30;
+    private final int HEIGHT = 30;
     private int xLoc;
     private int yLoc;
 
 
     public Square(GameView window) {
         this.window = window;
-        xLoc = 90;
-        yLoc = 90;
+        xLoc = (int)(Math.random() * (GameView.WINDOW_WIDTH - (WIDTH / 2)));
+        yLoc = (int)(Math.random() * (GameView.WINDOW_HEIGHT - (HEIGHT / 2)));
     }
 
     public Player getOwner() {
@@ -42,13 +42,13 @@ public class Square {
 
     public void shiftY(int shift, int low, int max) {
         // If it goes out of bounds down
-        if (yLoc - HEIGHT + shift < low && shift > 0) {
-            yLoc = low + HEIGHT;
+        if (yLoc + HEIGHT + shift > max && shift > 0) {
+            yLoc = max - HEIGHT;
         }
 
         // If it goes out of bounds up
-        else if (yLoc + (HEIGHT / 2) + shift > max && shift < 0) {
-            yLoc = max - (HEIGHT / 2);
+        else if (yLoc - (HEIGHT / 2) + shift < GameView.HEADER_HEIGHT && shift < 0) {
+            yLoc = GameView.HEADER_HEIGHT;
         }
 
         // Otherwise, shift normally

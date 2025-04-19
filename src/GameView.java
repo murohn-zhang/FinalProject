@@ -4,7 +4,8 @@ import java.awt.*;
 public class GameView extends JFrame {
     private Game game;
     public static int WINDOW_WIDTH = 800;
-    public static int WINDOW_HEIGHT = 1000;
+    public static int WINDOW_HEIGHT = 800;
+    public static int HEADER_HEIGHT = 23;
     private Player user;
     private Square sq;
 

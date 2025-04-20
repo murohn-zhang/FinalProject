@@ -8,10 +8,12 @@ public class GameView extends JFrame {
     public static int HEADER_HEIGHT = 23;
     private Player user;
     private Square sq;
+    private Computer comp;
 
-    public GameView(Game game, Square sq) {
+    public GameView(Game game, Square sq, Computer comp) {
         this.game = game;
         this.sq = sq;
+        this.comp = comp;
 
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setTitle("Paper.io");
@@ -20,9 +22,10 @@ public class GameView extends JFrame {
     }
 
     public void paint(Graphics g) {
-        g.setColor(Color.white);
-        g.fillRect(0,0, WINDOW_WIDTH,WINDOW_HEIGHT);
+//        g.setColor(Color.white);
+//        g.fillRect(0,0, WINDOW_WIDTH,WINDOW_HEIGHT);
         sq.draw(g);
+        comp.draw(g);
 
 
     }

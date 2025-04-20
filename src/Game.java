@@ -7,12 +7,14 @@ public class Game implements KeyListener {
     private ArrayList<Player> leaderboard;
     private Player computer;
     private Square sq;
+    private Computer comp;
     private final int shiftBy = 20;
 
     public Game() {
         leaderboard = new ArrayList<Player>();
         sq = new Square(window);
-        window = new GameView(this, sq);
+        comp = new Computer(window, sq);
+        window = new GameView(this, sq, comp);
         window.addKeyListener(this);
     }
 

@@ -3,16 +3,18 @@ import java.awt.*;
 public class Square {
     private Player owner;
     private GameView window;
-    private final int SIDE = 30;
+    public static final int SIDE = 30;
     private int xLoc;
     private int yLoc;
 
 
-    public Square(GameView window) {
+    public Square(GameView window, int xMin, int xMax, int yMin, int yMax) {
         this.window = window;
-        xLoc = (int)(Math.random() * (GameView.WINDOW_WIDTH - (SIDE / 2)));
-        yLoc = (int)(Math.random() * (GameView.WINDOW_HEIGHT - (SIDE / 2)));
+        xLoc = (int)(Math.random() * (xMax - xMin)) + xMin;
+        yLoc = (int)(Math.random() * (yMax - yMin)) + yMin;
+
     }
+
 
     public int getxLoc() {
         return xLoc;
@@ -64,8 +66,8 @@ public class Square {
         }
     }
 
-    public void draw(Graphics g) {
-        g.setColor(Color.red);
+    public void draw(Graphics g, Color color) {
+        g.setColor(color);
         g.fillRect(xLoc, yLoc, SIDE, SIDE);
     }
 

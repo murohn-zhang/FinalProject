@@ -3,8 +3,8 @@ import java.awt.*;
 
 public class GameView extends JFrame {
     private Game game;
-    public static final int WINDOW_WIDTH = 800;
-    public static final int WINDOW_HEIGHT = 800;
+    public static final int WINDOW_WIDTH = 900;
+    public static final int WINDOW_HEIGHT = 900;
     public static final int HEADER_HEIGHT = 23;
     private Player user;
     private Square sq;
@@ -24,8 +24,8 @@ public class GameView extends JFrame {
     public void paint(Graphics g) {
 //        g.setColor(Color.white);
 //        g.fillRect(0,0, WINDOW_WIDTH,WINDOW_HEIGHT);
-        sq.draw(g, Color.red);
-        comp.draw(g, Color.blue);
+        sq.draw(g);
+        comp.draw(g);
 
 
     }

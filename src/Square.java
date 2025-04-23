@@ -6,12 +6,14 @@ public class Square {
     public static final int SIDE = 30;
     private int xLoc;
     private int yLoc;
+    private Color color;
 
 
-    public Square(GameView window, int xMin, int xMax, int yMin, int yMax) {
+    public Square(GameView window, int xMin, int xMax, int yMin, int yMax, Color color) {
         this.window = window;
         xLoc = (int)(Math.random() * (xMax - xMin)) + xMin;
         yLoc = (int)(Math.random() * (yMax - yMin)) + yMin;
+        this.color = color;
 
     }
 
@@ -30,6 +32,10 @@ public class Square {
 
     public void setOwner(Player owner) {
         this.owner = owner;
+    }
+
+    public Color getColor(){
+        return color;
     }
 
     public void shiftX(int shift, int low, int max) {
@@ -64,11 +70,6 @@ public class Square {
         else {
             yLoc += shift;
         }
-    }
-
-    public void draw(Graphics g, Color color) {
-        g.setColor(color);
-        g.fillRect(xLoc, yLoc, SIDE, SIDE);
     }
 
 

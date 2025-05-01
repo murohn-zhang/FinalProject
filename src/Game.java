@@ -8,20 +8,24 @@ import java.util.ArrayList;
 
 public class Game implements KeyListener, ActionListener {
     private GameView window;
-    private ArrayList<Player> leaderboard;
-    private Player computer;
     private Square sq;
     private Square comp;
-    private final int shiftBy = 30;
-
+    private static final int SLEEP_TIME = 110;
     private Spot[][] grid;
 
     public Game() {
-        leaderboard = new ArrayList<Player>();
         grid = new Spot[GameView.WINDOW_HEIGHT / Square.SIDE][GameView.WINDOW_WIDTH / Square.SIDE];
-        sq = new Square(window, Square.SIDE / 2, GameView.WINDOW_WIDTH / 2, 0, GameView.WINDOW_HEIGHT - Square.SIDE / 2, Color.red);
-        comp = new Square(window, GameView.WINDOW_WIDTH / 2 + 1, GameView.WINDOW_WIDTH, 0, GameView.WINDOW_HEIGHT - Square.SIDE / 2, Color.blue);
-        window = new GameView(this, sq, comp);
+        // Fill in grid
+        for (int i = 0 ; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                Spot newOne = new Spot(i,j);
+                grid[i][j] = newOne;
+            }
+        }
+
+        sq = new Square(window, Square.SIDE / 2, GameView.WINDOW_WIDTH / 2, 0, GameView.WINDOW_HEIGHT - Square.SIDE / 2, Color.red, grid);
+        comp = new Square(window, GameView.WINDOW_WIDTH / 2 + 1, GameView.WINDOW_WIDTH, 0, GameView.WINDOW_HEIGHT - Square.SIDE / 2, Color.blue, grid);
+        window = new GameView(this, sq, comp, grid);
         window.addKeyListener(this);
     }
 
@@ -43,22 +47,22 @@ public class Game implements KeyListener, ActionListener {
         switch (e.getKeyCode()) {
             // Up
             case KeyEvent.VK_UP:
-                sq.shiftY(-shiftBy, 0, GameView.WINDOW_HEIGHT);
+                sq.setUpVelocity();
                 break;
 
             // Down
             case KeyEvent.VK_DOWN:
-                sq.shiftY(shiftBy, 0, GameView.WINDOW_HEIGHT);
+                sq.setDownVelocity();
                 break;
 
             // Left
             case KeyEvent.VK_LEFT:
-                sq.shiftX(-shiftBy, 0, GameView.WINDOW_WIDTH);
+                sq.setLeftVelocity();
                 break;
 
             // Right
             case KeyEvent.VK_RIGHT:
-                sq.shiftX(shiftBy, 0, GameView.WINDOW_WIDTH);
+                sq.setRightVelocity();
                 break;
         }
         window.repaint();
@@ -70,9 +74,8 @@ public class Game implements KeyListener, ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        comp.shiftX(shiftBy, 0, GameView.WINDOW_WIDTH);
-        comp.shiftY(shiftBy, 0, GameView.WINDOW_HEIGHT);
-
+        comp.randomMove();
+        sq.move();
         window.repaint();
     }
 

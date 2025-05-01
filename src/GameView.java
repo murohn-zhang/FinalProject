@@ -6,15 +6,16 @@ public class GameView extends JFrame {
     public static final int WINDOW_WIDTH = 900;
     public static final int WINDOW_HEIGHT = 900;
     public static final int HEADER_HEIGHT = 23;
-    private Player user;
     private Square sq;
     private Square comp;
+    private Spot[][] grid;
 
-    public GameView(Game game, Square sq, Square comp) {
+
+    public GameView(Game game, Square sq, Square comp, Spot[][] grid) {
         this.game = game;
+        this.grid = grid;
         this.sq = sq;
         this.comp = comp;
-
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setTitle("Paper.io");
         this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -24,8 +25,13 @@ public class GameView extends JFrame {
     public void paint(Graphics g) {
 //        g.setColor(Color.white);
 //        g.fillRect(0,0, WINDOW_WIDTH,WINDOW_HEIGHT);
-        sq.draw(g);
-        comp.draw(g);
+        for (int i = 0 ; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j].getOwner() != null) {
+                    grid[i][j].draw(g);
+                }
+            }
+        }
 
 
     }

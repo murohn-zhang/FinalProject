@@ -10,6 +10,10 @@ public class Spot {
         this.col = col;
     }
 
+    public Square getOwner() {
+        return owner;
+    }
+
     public void setOwner(Square owner) {
         this.owner = owner;
     }

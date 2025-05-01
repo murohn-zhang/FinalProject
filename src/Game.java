@@ -12,6 +12,7 @@ public class Game implements KeyListener, ActionListener {
     private Square comp;
     private static final int SLEEP_TIME = 110;
     private Spot[][] grid;
+    private int state;
 
     public Game() {
         grid = new Spot[GameView.WINDOW_HEIGHT / Square.SIDE][GameView.WINDOW_WIDTH / Square.SIDE];
@@ -27,10 +28,12 @@ public class Game implements KeyListener, ActionListener {
         comp = new Square(window, GameView.WINDOW_WIDTH / 2 + 1, GameView.WINDOW_WIDTH, 0, GameView.WINDOW_HEIGHT - Square.SIDE / 2, Color.blue, grid);
         window = new GameView(this, sq, comp, grid);
         window.addKeyListener(this);
+        state = 1;
+        window.repaint();
     }
 
-    public void computerWork() {
-
+    public int getState() {
+        return state;
     }
 
     public void playGame() {
@@ -64,6 +67,10 @@ public class Game implements KeyListener, ActionListener {
             case KeyEvent.VK_RIGHT:
                 sq.setRightVelocity();
                 break;
+
+            case KeyEvent.VK_SPACE:
+                state = 2;
+                window.repaint();
         }
         window.repaint();
     }

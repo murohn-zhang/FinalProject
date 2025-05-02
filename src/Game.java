@@ -71,8 +71,8 @@ public class Game implements KeyListener, ActionListener {
             case KeyEvent.VK_SPACE:
                 state = 2;
                 window.repaint();
+                break;
         }
-        window.repaint();
     }
 
     @Override
@@ -81,8 +81,10 @@ public class Game implements KeyListener, ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        comp.randomMove();
-        sq.move();
+        if (state == 2) {
+            comp.randomMove();
+            sq.move();
+        }
         window.repaint();
     }
 

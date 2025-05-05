@@ -4,8 +4,8 @@ import java.awt.image.BufferStrategy;
 
 public class GameView extends JFrame {
     private Game game;
-    public static final int WINDOW_WIDTH = 750;
-    public static final int WINDOW_HEIGHT = 750;
+    public static final int WINDOW_WIDTH = 300;
+    public static final int WINDOW_HEIGHT = 300;
     public static final int HEADER_HEIGHT = 23;
     private Square sq;
     private Square comp;
@@ -80,6 +80,11 @@ public class GameView extends JFrame {
     }
 
     public void paintEnd(Graphics g) {
+        g.setColor(Color.WHITE);
+        g.fillRect( 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
+        g.setColor(Color.blue);
+        g.setFont(new Font("Serif", Font.PLAIN, 50));
+        g.drawString("GAME END!", 150, 200);
     }
 }

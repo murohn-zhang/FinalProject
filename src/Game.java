@@ -13,6 +13,7 @@ public class Game implements KeyListener, ActionListener {
     private static final int SLEEP_TIME = 110;
     private Spot[][] grid;
     private int state;
+    private Spot previous;
 
     public Game() {
         grid = new Spot[GameView.WINDOW_HEIGHT / Square.SIDE][GameView.WINDOW_WIDTH / Square.SIDE];
@@ -36,8 +37,15 @@ public class Game implements KeyListener, ActionListener {
         return state;
     }
 
-    public void playGame() {
-
+    public boolean checkEnd() {
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j].getOwner() == null) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     @Override
@@ -47,6 +55,10 @@ public class Game implements KeyListener, ActionListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        if (checkEnd()) { // WHERE'S THE RIGHT PLACE TO PUT THIS
+            state = 3;
+            window.repaint();
+        }
         switch (e.getKeyCode()) {
             // Up
             case KeyEvent.VK_UP:

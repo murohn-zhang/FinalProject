@@ -70,6 +70,7 @@ public class GameView extends JFrame {
     }
 
     public void paintPlay(Graphics g) {
+        g.setColor(Color.WHITE);
         for (int i = 0 ; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {
                 if (grid[i][j].getOwner() != null) {
@@ -87,4 +88,5 @@ public class GameView extends JFrame {
         g.setFont(new Font("Serif", Font.PLAIN, 50));
         g.drawString("GAME END!", 150, 200);
     }
+
 }

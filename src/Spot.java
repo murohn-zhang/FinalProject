@@ -28,4 +28,5 @@ public class Spot {
         g.setColor(Color.black);
         g.drawRect(xLoc, yLoc, Square.SIDE, Square.SIDE);
     }
+
 }

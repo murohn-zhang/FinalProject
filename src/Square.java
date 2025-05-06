@@ -5,6 +5,8 @@ public class Square {
     public static final int SIDE = 30;
     private int xLoc;
     private int yLoc;
+    private int row;
+    private int col;
     private int dx;
     private int dy;
     private Color color;
@@ -17,19 +19,21 @@ public class Square {
         xLoc = (int)(Math.random() * (xMax - xMin)) + xMin;
         yLoc = (int)(Math.random() * (yMax - yMin)) + yMin;
         this.grid = grid;
-        grid[(int)Math.round(xLoc / SIDE)][(int)Math.round(yLoc / SIDE)].setOwner(this);
+        row = (int)Math.round(xLoc / SIDE);
+        col = (int)Math.round(yLoc / SIDE);
+//        grid[(int)Math.round(xLoc / SIDE)][(int)Math.round(yLoc / SIDE)].setOwner(this);
         this.color = color;
         dx = SIDE;
         dy = 0;
         past = 3;
     }
 
-    public int getxLoc() {
-        return xLoc;
+    public int getRow() {
+        return row;
     }
 
-    public int getyLoc() {
-        return yLoc;
+    public int getCol() {
+        return col;
     }
 
     public Color getColor(){
@@ -76,7 +80,8 @@ public class Square {
         else {
             xLoc += shift;
         }
-        grid[(int)Math.round(xLoc / SIDE)][(int)Math.round(yLoc / SIDE)].setOwner(this);
+        row = (int)Math.round(xLoc / SIDE);
+        col = (int)Math.round(yLoc / SIDE);
     }
 
     public void shiftY(int shift, int low, int max) {
@@ -94,7 +99,8 @@ public class Square {
         else {
             yLoc += shift;
         }
-        grid[(int)Math.round(xLoc / SIDE)][(int)Math.round(yLoc / SIDE)].setOwner(this);
+        row = (int)Math.round(xLoc / SIDE);
+        col = (int)Math.round(yLoc / SIDE);
     }
 
     public void randomMove() {

@@ -27,8 +27,8 @@ public class Game implements KeyListener, ActionListener {
             }
         }
 
-        sq = new Square(window, Square.SIDE / 2, GameView.WINDOW_WIDTH / 2, 0, GameView.WINDOW_HEIGHT - Square.SIDE / 2, Color.red);
-        comp = new Square(window, GameView.WINDOW_WIDTH / 2 + 1, GameView.WINDOW_WIDTH, 0, GameView.WINDOW_HEIGHT - Square.SIDE / 2, Color.blue);
+        sq = new Square(Square.SIDE / 2, GameView.WINDOW_WIDTH / 2, 0, GameView.WINDOW_HEIGHT - Square.SIDE / 2, Color.magenta);
+        comp = new Square(GameView.WINDOW_WIDTH / 2 + 1, GameView.WINDOW_WIDTH, 0, GameView.WINDOW_HEIGHT - Square.SIDE / 2, Color.orange);
         window = new GameView(this, sq, comp, grid);
         window.addKeyListener(this);
         clock = new Timer(SLEEP_TIME, this);
@@ -76,8 +76,8 @@ public class Game implements KeyListener, ActionListener {
     public Square findWinner() {
         int numSquares = (GameView.WINDOW_WIDTH / Square.SIDE) * (GameView.WINDOW_HEIGHT / Square.SIDE);
         countArea();
-        sqTotal = (int)(sq.getArea() / numSquares * 100);
-        compTotal = (int)(sq.getArea() / numSquares * 100);
+        sqTotal = (int)(sq.getArea()); // / numSquares) * 100;
+        compTotal = (int)(sq.getArea()); // / numSquares) * 100;
 
         if (sqTotal < compTotal) {
             return comp;
@@ -134,7 +134,6 @@ public class Game implements KeyListener, ActionListener {
             sq.move();
             grid[sq.getRow()][sq.getCol()].setOwner(sq);
             grid[comp.getRow()][comp.getCol()].setOwner(comp);
-
         }
         checkEnd();
         if (state == 3) {

@@ -1,8 +1,10 @@
 import java.awt.*;
 
 public class Square {
-    private GameView window;
+    // Declare instance variables
     public static final int SIDE = 30;
+    private Color color;
+    private int area;
     // Pixel location
     private int xLoc;
     private int yLoc;
@@ -12,24 +14,32 @@ public class Square {
     // Direction/velocity
     private int dx;
     private int dy;
-    private Color color;
+    // Variable for the computer to move randomly while not going back and forth b/w left & right or up & down
     private int past;
-    private int area;
 
 
-    public Square(GameView window, int xMin, int xMax, int yMin, int yMax, Color color) {
-        this.window = window;
+    // Constructor
+    public Square( int xMin, int xMax, int yMin, int yMax, Color color) {
+        // Randomly assign a location. Player will start on left half of screen and computer starts on right half
+        // xMax/Min and yMax/Min are used to restrict different squares
         xLoc = (int)(Math.random() * (xMax - xMin)) + xMin;
         yLoc = (int)(Math.random() * (yMax - yMin)) + yMin;
+        // Location of the square in the grid
         row = (int)Math.round(xLoc / SIDE);
         col = (int)Math.round(yLoc / SIDE);
         this.color = color;
+        // Have the player start moving right
         dx = SIDE;
         dy = 0;
         past = 3;
         area = 0;
     }
 
+    public Color getColor(){
+        return color;
+    }
+
+    // Getting and changing area
     public int getArea() {
         return area;
     }
@@ -38,6 +48,7 @@ public class Square {
         area++;
     }
 
+    // Getting grid location
     public int getRow() {
         return row;
     }
@@ -46,10 +57,7 @@ public class Square {
         return col;
     }
 
-    public Color getColor(){
-        return color;
-    }
-
+    // Change direction of square
     public void setUpVelocity() {
         dx = 0;
         dy = -SIDE;
@@ -75,14 +83,15 @@ public class Square {
         shiftY(dy, GameView.WINDOW_HEIGHT);
     }
 
+    // Moves square left and right
     public void shiftX(int shift, int max) {
         // If it goes out of bounds to the left
-        if (xLoc - (SIDE / 2) + shift < 0 && shift < 0) {
+        if (xLoc + shift < 0 && shift < 0) {
             xLoc = 0;
         }
 
         // If it goes out of bounds to the right
-        else if (xLoc + SIDE + shift > max && shift > 0) {
+        else if (xLoc + shift > max && shift > 0) {
             xLoc = max - SIDE;
         }
 
@@ -91,9 +100,11 @@ public class Square {
             xLoc += shift;
         }
 
-        col = (int)Math.round(xLoc / SIDE);
+        // Update grid location
+        col = (int)Math.floor(xLoc / SIDE);
     }
 
+    // Moves square up and down
     public void shiftY(int shift, int max) {
         // If it goes out of bounds down
         if (yLoc + shift > max && shift > 0) {
@@ -101,7 +112,7 @@ public class Square {
         }
 
         // If it goes out of bounds up
-        else if (yLoc - (SIDE / 2) + shift < GameView.HEADER_HEIGHT && shift < 0) {
+        else if (yLoc + shift < GameView.HEADER_HEIGHT && shift < 0) {
             yLoc = GameView.HEADER_HEIGHT + SIDE / 2;
         }
 
@@ -109,7 +120,9 @@ public class Square {
         else {
             yLoc += shift;
         }
-        row = (int)Math.round(yLoc / SIDE);
+
+        // Update grid location
+        row = (int)Math.floor(yLoc / SIDE);
 
     }
 

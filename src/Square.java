@@ -3,29 +3,39 @@ import java.awt.*;
 public class Square {
     private GameView window;
     public static final int SIDE = 30;
+    // Pixel location
     private int xLoc;
     private int yLoc;
+    // Location in terms of squares
     private int row;
     private int col;
+    // Direction/velocity
     private int dx;
     private int dy;
     private Color color;
-    private Spot[][] grid;
     private int past;
+    private int area;
 
 
-    public Square(GameView window, int xMin, int xMax, int yMin, int yMax, Color color, Spot[][] grid) {
+    public Square(GameView window, int xMin, int xMax, int yMin, int yMax, Color color) {
         this.window = window;
         xLoc = (int)(Math.random() * (xMax - xMin)) + xMin;
         yLoc = (int)(Math.random() * (yMax - yMin)) + yMin;
-        this.grid = grid;
         row = (int)Math.round(xLoc / SIDE);
         col = (int)Math.round(yLoc / SIDE);
-//        grid[(int)Math.round(xLoc / SIDE)][(int)Math.round(yLoc / SIDE)].setOwner(this);
         this.color = color;
         dx = SIDE;
         dy = 0;
         past = 3;
+        area = 0;
+    }
+
+    public int getArea() {
+        return area;
+    }
+
+    public void addArea() {
+        area++;
     }
 
     public int getRow() {
@@ -61,13 +71,13 @@ public class Square {
     }
 
     public void move() {
-        shiftX(dx, 0, GameView.WINDOW_WIDTH);
-        shiftY(dy, 0, GameView.WINDOW_HEIGHT);
+        shiftX(dx, GameView.WINDOW_WIDTH);
+        shiftY(dy, GameView.WINDOW_HEIGHT);
     }
 
-    public void shiftX(int shift, int low, int max) {
+    public void shiftX(int shift, int max) {
         // If it goes out of bounds to the left
-        if (xLoc - (SIDE / 2) + shift < low && shift < 0) {
+        if (xLoc - (SIDE / 2) + shift < 0 && shift < 0) {
             xLoc = 0;
         }
 
@@ -80,14 +90,14 @@ public class Square {
         else {
             xLoc += shift;
         }
-        row = (int)Math.round(xLoc / SIDE);
-        col = (int)Math.round(yLoc / SIDE);
+
+        col = (int)Math.round(xLoc / SIDE);
     }
 
-    public void shiftY(int shift, int low, int max) {
+    public void shiftY(int shift, int max) {
         // If it goes out of bounds down
-        if (yLoc + SIDE + shift > max && shift > 0) {
-            yLoc = max - SIDE - shift;
+        if (yLoc + shift > max && shift > 0) {
+            yLoc = max - shift;
         }
 
         // If it goes out of bounds up
@@ -99,8 +109,8 @@ public class Square {
         else {
             yLoc += shift;
         }
-        row = (int)Math.round(xLoc / SIDE);
-        col = (int)Math.round(yLoc / SIDE);
+        row = (int)Math.round(yLoc / SIDE);
+
     }
 
     public void randomMove() {
@@ -125,6 +135,16 @@ public class Square {
         }
 
         move();
+    }
+
+    public void drawSquare(Graphics g) {
+        int xPlace = col * Square.SIDE;
+        int yPlace = row * Square.SIDE;
+
+        g.setColor(color);
+        g.fillRect(xPlace, yPlace, Square.SIDE, Square.SIDE);
+        g.setColor(Color.black);
+        g.drawRect(xPlace, yPlace, Square.SIDE, Square.SIDE);
     }
 
 

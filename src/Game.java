@@ -13,6 +13,9 @@ public class Game implements KeyListener, ActionListener {
     private static final int SLEEP_TIME = 110;
     private Spot[][] grid;
     private int state;
+    private static Timer clock;
+    private int sqTotal;
+    private int compTotal;
 
     public Game() {
         grid = new Spot[GameView.WINDOW_HEIGHT / Square.SIDE][GameView.WINDOW_WIDTH / Square.SIDE];
@@ -24,16 +27,25 @@ public class Game implements KeyListener, ActionListener {
             }
         }
 
-        sq = new Square(window, Square.SIDE / 2, GameView.WINDOW_WIDTH / 2, 0, GameView.WINDOW_HEIGHT - Square.SIDE / 2, Color.red, grid);
-        comp = new Square(window, GameView.WINDOW_WIDTH / 2 + 1, GameView.WINDOW_WIDTH, 0, GameView.WINDOW_HEIGHT - Square.SIDE / 2, Color.blue, grid);
+        sq = new Square(window, Square.SIDE / 2, GameView.WINDOW_WIDTH / 2, 0, GameView.WINDOW_HEIGHT - Square.SIDE / 2, Color.red);
+        comp = new Square(window, GameView.WINDOW_WIDTH / 2 + 1, GameView.WINDOW_WIDTH, 0, GameView.WINDOW_HEIGHT - Square.SIDE / 2, Color.blue);
         window = new GameView(this, sq, comp, grid);
         window.addKeyListener(this);
+        clock = new Timer(SLEEP_TIME, this);
         state = 1;
         window.repaint();
     }
 
     public int getState() {
         return state;
+    }
+
+    public int getSqTotal() {
+        return sqTotal;
+    }
+
+    public int getCompTotal() {
+        return compTotal;
     }
 
     public boolean checkEnd() {
@@ -44,7 +56,36 @@ public class Game implements KeyListener, ActionListener {
                 }
             }
         }
+        state = 3;
         return true;
+    }
+
+    public void countArea() {
+        for(int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j].getOwner() == sq) {
+                    sq.addArea();
+                }
+                else {
+                    comp.addArea();
+                }
+            }
+        }
+    }
+
+    public Square findWinner() {
+        int numSquares = (GameView.WINDOW_WIDTH / Square.SIDE) * (GameView.WINDOW_HEIGHT / Square.SIDE);
+        countArea();
+        sqTotal = (int)(sq.getArea() / numSquares * 100);
+        compTotal = (int)(sq.getArea() / numSquares * 100);
+
+        if (sqTotal < compTotal) {
+            return comp;
+        }
+
+        else {
+            return sq;
+        }
     }
 
     @Override
@@ -91,17 +132,20 @@ public class Game implements KeyListener, ActionListener {
         if (state == 2) {
             comp.randomMove();
             sq.move();
+            grid[sq.getRow()][sq.getCol()].setOwner(sq);
+            grid[comp.getRow()][comp.getCol()].setOwner(comp);
 
         }
-        if (checkEnd()) { // WHERE'S THE RIGHT PLACE TO PUT THIS
-            state = 3;
+        checkEnd();
+        if (state == 3) {
+            clock.stop();
         }
         window.repaint();
     }
 
+
     public static void main(String [] args) {
         Game g = new Game();
-        Timer clock = new Timer(SLEEP_TIME, g);
         clock.start();
     }
 }

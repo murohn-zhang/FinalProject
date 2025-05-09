@@ -20,13 +20,11 @@ public class Spot {
 
     public void draw(Graphics g) {
         Color color = owner.getColor();
-        int xLoc = row * Square.SIDE;
-        int yLoc = col * Square.SIDE;
+        int xLoc = col * Square.SIDE;
+        int yLoc = row * Square.SIDE;
 
         g.setColor(color);
         g.fillRect(xLoc, yLoc, Square.SIDE, Square.SIDE);
-        g.setColor(Color.black);
-        g.drawRect(xLoc, yLoc, Square.SIDE, Square.SIDE);
     }
 
 }

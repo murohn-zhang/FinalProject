@@ -75,6 +75,7 @@ public class GameView extends JFrame {
             for (int j = 0; j < grid[0].length; j++) {
                 if (grid[i][j].getOwner() != null) {
                     grid[i][j].draw(g);
+                    grid[i][j].getOwner().drawSquare(g);
                 }
             }
         }
@@ -87,6 +88,9 @@ public class GameView extends JFrame {
         g.setColor(Color.blue);
         g.setFont(new Font("Serif", Font.PLAIN, 50));
         g.drawString("GAME END!", 150, 200);
+        game.findWinner();
+        g.drawString("Player area:" + game.getSqTotal() + "%", 150, 250);
+        g.drawString("Computer area:" + game.getCompTotal() + "%", 150, 300);
     }
 
 }

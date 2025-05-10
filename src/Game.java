@@ -7,31 +7,39 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 public class Game implements KeyListener, ActionListener {
+
+    // Declare instance variables
     private GameView window;
+    private Spot[][] grid;
+    // The two players
     private Square sq;
     private Square comp;
-    private static final int SLEEP_TIME = 110;
-    private Spot[][] grid;
-    private int state;
+    // For the animation of the squares
     private static Timer clock;
+    private static final int SLEEP_TIME = 110;
+    // Variable to know what window "face" should be displayed
+    private int state;
+    // Final areas of the players
     private int sqTotal;
     private int compTotal;
 
     public Game() {
+        // Initialize and fill in grid
         grid = new Spot[GameView.WINDOW_HEIGHT / Square.SIDE][GameView.WINDOW_WIDTH / Square.SIDE];
-        // Fill in grid
         for (int i = 0 ; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {
                 Spot newOne = new Spot(i,j);
                 grid[i][j] = newOne;
             }
         }
-
-        sq = new Square(Square.SIDE / 2, GameView.WINDOW_WIDTH / 2, 0, GameView.WINDOW_HEIGHT - Square.SIDE / 2, Color.magenta);
-        comp = new Square(GameView.WINDOW_WIDTH / 2 + 1, GameView.WINDOW_WIDTH, 0, GameView.WINDOW_HEIGHT - Square.SIDE / 2, Color.orange);
+        // Create the players
+        sq = new Square(Square.SIDE / 2, GameView.WINDOW_WIDTH / 2, 0, GameView.WINDOW_HEIGHT - GameView.HEADER_HEIGHT, Color.magenta);
+        comp = new Square(GameView.WINDOW_WIDTH / 2 + 1, GameView.WINDOW_WIDTH, 0, GameView.WINDOW_HEIGHT - GameView.HEADER_HEIGHT, Color.orange);
+        // Initialize other variables
         window = new GameView(this, sq, comp, grid);
         window.addKeyListener(this);
         clock = new Timer(SLEEP_TIME, this);
+        // Set window to start page
         state = 1;
         window.repaint();
     }
@@ -48,6 +56,7 @@ public class Game implements KeyListener, ActionListener {
         return compTotal;
     }
 
+    // Check if the entire grid is filled, set window to end page if true
     public boolean checkEnd() {
         for(int i = 1; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {
@@ -60,8 +69,9 @@ public class Game implements KeyListener, ActionListener {
         return true;
     }
 
+    // When the game is over, count how many squares each player has
     public void countArea() {
-        for(int i = 0; i < grid.length; i++) {
+        for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {
                 if (grid[i][j].getOwner() == sq) {
                     sq.addArea();
@@ -73,18 +83,19 @@ public class Game implements KeyListener, ActionListener {
         }
     }
 
-    public Square findWinner() {
-        int numSquares = (GameView.WINDOW_WIDTH / Square.SIDE) * (GameView.WINDOW_HEIGHT / Square.SIDE);
+    // Find each players percentage of area and return the winner
+    public String findWinner() {
+        int numSquares = grid.length * grid[0].length;
         countArea();
-        sqTotal = (int)(sq.getArea()); // / numSquares) * 100;
-        compTotal = (int)(sq.getArea()); // / numSquares) * 100;
+        sqTotal = (int)(sq.getArea() * 100 / numSquares);
+        compTotal = (int)(comp.getArea() * 100 / numSquares);
 
         if (sqTotal < compTotal) {
-            return comp;
+            return "The computer";
         }
 
         else {
-            return sq;
+            return "Congrats! You";
         }
     }
 
@@ -93,6 +104,8 @@ public class Game implements KeyListener, ActionListener {
 
     }
 
+    // Actions depending on which key is used:
+    // SPACE starts the game and arrows call function to change direction of square
     @Override
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
@@ -128,23 +141,31 @@ public class Game implements KeyListener, ActionListener {
 
     }
 
+    // Updates made for every repaint
     public void actionPerformed(ActionEvent e) {
+        // Keep checking if the game is over
+        checkEnd();
+
+        // If it's not over, keep moving both players and updating grid ownership accordingly
         if (state == 2) {
             comp.randomMove();
             sq.move();
             grid[sq.getRow()][sq.getCol()].setOwner(sq);
             grid[comp.getRow()][comp.getCol()].setOwner(comp);
         }
-        checkEnd();
-        if (state == 3) {
+
+        // If it is over, stop moving the squares (to properly count final area)
+        else if (state == 3) {
             clock.stop();
         }
+
         window.repaint();
     }
 
-
+    // Main
     public static void main(String [] args) {
         Game g = new Game();
+        // Start animation
         clock.start();
     }
 }

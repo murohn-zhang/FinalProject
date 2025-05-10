@@ -8,7 +8,7 @@ public class Square {
     // Pixel location
     private int xLoc;
     private int yLoc;
-    // Location in terms of squares
+    // Location in terms of squares in grid
     private int row;
     private int col;
     // Direction/velocity
@@ -20,6 +20,9 @@ public class Square {
 
     // Constructor
     public Square( int xMin, int xMax, int yMin, int yMax, Color color) {
+        // Initialize variables
+        this.color = color;
+        area = 0;
         // Randomly assign a location. Player will start on left half of screen and computer starts on right half
         // xMax/Min and yMax/Min are used to restrict different squares
         xLoc = (int)(Math.random() * (xMax - xMin)) + xMin;
@@ -32,9 +35,10 @@ public class Square {
         dx = SIDE;
         dy = 0;
         past = 3;
-        area = 0;
     }
 
+
+    // Give access to color so individual squares can be filled in Spot according to their owner
     public Color getColor(){
         return color;
     }
@@ -91,8 +95,8 @@ public class Square {
         }
 
         // If it goes out of bounds to the right
-        else if (xLoc + shift > max && shift > 0) {
-            xLoc = max - SIDE;
+        else if (xLoc + shift >= max && shift > 0) {
+            xLoc = max - SIDE / 2;
         }
 
         // Otherwise, shift normally
@@ -107,8 +111,8 @@ public class Square {
     // Moves square up and down
     public void shiftY(int shift, int max) {
         // If it goes out of bounds down
-        if (yLoc + shift > max && shift > 0) {
-            yLoc = max - shift;
+        if (yLoc + shift >= max && shift > 0) {
+            yLoc = max - SIDE / 2;
         }
 
         // If it goes out of bounds up
@@ -126,6 +130,8 @@ public class Square {
 
     }
 
+    // Random movement of the computer. Movement is the same logic as the player square, these different conditions are
+    // to make the movement random but natural (as explained for the 'past' variable)
     public void randomMove() {
         int possibility = (int)(Math.random() * 100);
         if (possibility < 25 && past != 2) {
@@ -150,15 +156,17 @@ public class Square {
         move();
     }
 
+    // Draw the leading square with a border so it's clear where the squares currently are
     public void drawSquare(Graphics g) {
         int xPlace = col * Square.SIDE;
         int yPlace = row * Square.SIDE;
 
+        // Square
         g.setColor(color);
         g.fillRect(xPlace, yPlace, Square.SIDE, Square.SIDE);
+
+        // Border
         g.setColor(Color.black);
         g.drawRect(xPlace, yPlace, Square.SIDE, Square.SIDE);
     }
-
-
 }

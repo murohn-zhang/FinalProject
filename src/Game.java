@@ -87,8 +87,8 @@ public class Game implements KeyListener, ActionListener {
     public String findWinner() {
         int numSquares = grid.length * grid[0].length;
         countArea();
-        sqTotal = (int)(sq.getArea() * 100 / numSquares);
-        compTotal = (int)(comp.getArea() * 100 / numSquares);
+        sqTotal = Math.round(sq.getArea() * 100) / numSquares;
+        compTotal = 100 - sqTotal;
 
         if (sqTotal < compTotal) {
             return "The computer";

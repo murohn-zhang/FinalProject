@@ -105,7 +105,7 @@ public class Square {
         }
 
         // Update grid location
-        col = (int)Math.floor(xLoc / SIDE);
+        col = (int)Math.round(xLoc / SIDE);
     }
 
     // Moves square up and down
@@ -126,7 +126,7 @@ public class Square {
         }
 
         // Update grid location
-        row = (int)Math.floor(yLoc / SIDE);
+        row = (int)Math.round(yLoc / SIDE);
 
     }
 

@@ -108,11 +108,11 @@ public class GameView extends JFrame {
         g.drawString("GAME OVER!", 65, 300);
 
         // Call findWinner() to get player totals and winner, print results
-        game.findWinner();
+        String winner = game.findWinner();
         g.setFont(new Font("Serif", Font.PLAIN, 30));
         g.drawString("Player area: " + game.getSqTotal() + "%", 275, 450);
         g.drawString("Computer area: " + game.getCompTotal() + "%", 250, 500);
-        g.drawString(game.findWinner() + " won!", 260, 550);
+        g.drawString(winner + " won!", 260, 550);
     }
 
 }

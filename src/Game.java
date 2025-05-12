@@ -90,10 +90,12 @@ public class Game implements KeyListener, ActionListener {
         sqTotal = Math.round(sq.getArea() * 100) / numSquares;
         compTotal = 100 - sqTotal;
 
+        System.out.println("computer:" + compTotal);
+        System.out.println("Player:" + sqTotal);
+
         if (sqTotal < compTotal) {
             return "The computer";
         }
-
         else {
             return "Congrats! You";
         }
